@@ -35,9 +35,9 @@ class _SplashViewBodyState extends State<SplashViewBody>
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(AssetsData.logo),
+        Image.asset(AssetsData.logo, height: 70,),
         const SizedBox(
-          height: 10,
+          height: 5,
         ),
         AnimatedBuilder(
             animation: slidingAnimation,
@@ -49,6 +49,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
                     textAlign: TextAlign.center,
                   ));
             }),
+      
       ],
     );
   }
