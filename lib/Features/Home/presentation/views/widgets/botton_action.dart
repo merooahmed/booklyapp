@@ -1,9 +1,11 @@
+import 'package:booklyapp/Features/Home/data/models/book_model/book_model.dart';
 import 'package:booklyapp/core/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ButtonAction extends StatelessWidget {
-  const ButtonAction({super.key});
-
+  const ButtonAction({super.key, required this.bookModel});
+  final BookModel bookModel;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,9 +22,14 @@ class ButtonAction extends StatelessWidget {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(16),
                               bottomLeft: Radius.circular(16)))),
-                  onPressed: () {},
+                  onPressed: () async {
+                    Uri uri = Uri.parse(bookModel.volumeInfo.previewLink!);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri);
+                    }
+                  },
                   child: Text(
-                    '19.99 €',
+                    'Free',
                     style: Styles.textStyle20.copyWith(
                         color: Colors.black, fontWeight: FontWeight.w600),
                   )),

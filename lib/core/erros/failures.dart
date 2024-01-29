@@ -9,33 +9,33 @@ class ServerFailure extends Failure {
   ServerFailure(super.errorMsg);
   factory ServerFailure.fromDioError(DioException dioError) {
     switch (dioError.type) {
-      case DioExceptionType.receiveTimeout:
       case DioExceptionType.connectionTimeout:
         return ServerFailure('Connection timeout with ApiServer');
       case DioExceptionType.sendTimeout:
         return ServerFailure('Send timeout with ApiServer');
+
+      case DioExceptionType.receiveTimeout:
+        return ServerFailure('Receive timeout with ApiServer');
+
       case DioExceptionType.badCertificate:
-        return ServerFailure(
-            "SSL Certificate Error: The server's SSL certificate is not valid.");
+        return ServerFailure('Server certificate is not valid.');
+
       case DioExceptionType.badResponse:
-        return ServerFailure(
-            "Bad Response Error: The server returned an unexpected response.");
+        return ServerFailure(dioError.response!.data['error']['message']);
+
       case DioExceptionType.cancel:
-       return ServerFailure(
-            "Request Canceled Error: The request was canceled.");
+        return ServerFailure('Request to ApiServer was canceld');
       case DioExceptionType.connectionError:
-       return ServerFailure(
-            "Connection Error: There was an issue with the network connection or server.");
+        return ServerFailure('No Internet Connection');
       case DioExceptionType.unknown:
-      
-       return ServerFailure(
-            "Unknown DioError: An unknown Dio error occurred.");
-        default:
-           return ServerFailure('Opps There was an Error, Please try again');  
+        return ServerFailure('Unknown error occurred. Please try again later.');
+
+      default:
+        return ServerFailure('Opps There was an Error, Please try again');
     }
   }
 
-  factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
+ /* factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
       return ServerFailure(response['error']['message']);
     } else if (statusCode == 404) {
@@ -45,5 +45,5 @@ class ServerFailure extends Failure {
     } else {
       return ServerFailure('Opps There was an Error, Please try again');
     }
-  }
+  }*/
 }
